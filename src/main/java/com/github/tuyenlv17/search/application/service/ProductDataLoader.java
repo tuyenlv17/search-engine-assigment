@@ -24,7 +24,7 @@ public class ProductDataLoader {
     public List<Product> loadProducts() {
         List<Product> products = new ArrayList<>();
         try {
-            Scanner scanner = new Scanner(new File("assignment/product_names-test.txt"));
+            Scanner scanner = new Scanner(new File("assignment/product_names.txt"));
             int lineCnt = 0;
             while (scanner.hasNext()) {
                 String line = scanner.nextLine().trim();
