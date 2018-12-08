@@ -9,11 +9,11 @@ import java.util.List;
  * Created by tuyenlv17 on 2018-12-04.
  */
 public class DefaultTokenizer implements Tokenizer {
-
-    private static final String DELIMETER = "[\\s\\.,\"'?()-{}]";
+    //TODO check unicode delimiter
+    private static final String DELIMITER = "[\\s\\.,\"'?()-]";
 
     @Override
     public List<String> tokenize(String text) {
-        return Arrays.asList(text.split(DELIMETER));
+        return Arrays.asList(text.split(DELIMITER));
     }
 }
