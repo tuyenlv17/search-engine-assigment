@@ -9,6 +9,7 @@ import com.github.tuyenlv17.search.engine.index.stat.TermStats;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 /**
@@ -72,6 +73,18 @@ public abstract class Storage {
                     return s;
                 })
                 .collect(Collectors.toSet());
+    }
+
+    public Map<DocumentScore, DocumentScore> getDocScoreMapByTerm(Term term) {
+        return getDocIdsByTerm(term)
+                .stream()
+                .map(s -> new DocumentScore(s, 0))
+                .map(s -> {
+                    LOGGER.debug("doc {}", getDoc(s.getDocId()).getDocAsMap());
+                    s.setDocAsMap(getDoc(s.getDocId()).getDocAsMap());
+                    return s;
+                })
+                .collect(Collectors.toMap(documentScore -> documentScore, documentScore -> documentScore));
     }
 
     /**

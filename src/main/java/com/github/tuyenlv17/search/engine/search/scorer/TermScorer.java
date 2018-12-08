@@ -4,11 +4,12 @@ import com.github.tuyenlv17.search.engine.document.DocumentScore;
 import com.github.tuyenlv17.search.engine.document.Term;
 import com.github.tuyenlv17.search.engine.index.stat.FieldStats;
 import com.github.tuyenlv17.search.engine.index.stat.TermStats;
-import com.github.tuyenlv17.search.engine.query.TermQuery;
+import com.github.tuyenlv17.search.engine.search.query.TermQuery;
 import com.github.tuyenlv17.search.engine.search.similarity.Similarity;
 import com.github.tuyenlv17.search.engine.storage.Storage;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,14 +36,25 @@ public class TermScorer extends Scorer {
     public Set<DocumentScore> scoreDocSet() {
         return storage.getDocScoreByTerm(term)
                 .stream()
-                .map(documentScore -> {
-                    int termFreq = storage.termFreq(term, documentScore.getDocId());
-                    TermStats termStats = storage.getTermStats(term);
-                    FieldStats fieldStats = storage.getFieldStats(term.getFieldName());
-                    int fieldLength = storage.getFieldLength(term.getFieldName(), documentScore.getDocId());
-                    documentScore.setScore(similarity.score(termFreq, termStats, fieldLength, fieldStats));
-                    return documentScore;
-                })
+                .map(documentScore -> caculateScore(documentScore))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Map<DocumentScore, DocumentScore> scoreDocMap() {
+        Map<DocumentScore, DocumentScore> docScoreMap = storage.getDocScoreMapByTerm(term);
+        docScoreMap.forEach((documentScore, documentScore2) -> {
+            caculateScore(documentScore);
+        });
+        return docScoreMap;
+    }
+
+    protected DocumentScore caculateScore(DocumentScore documentScore) {
+        int termFreq = storage.termFreq(term, documentScore.getDocId());
+        TermStats termStats = storage.getTermStats(term);
+        FieldStats fieldStats = storage.getFieldStats(term.getFieldName());
+        int fieldLength = storage.getFieldLength(term.getFieldName(), documentScore.getDocId());
+        documentScore.setScore(similarity.score(termFreq, termStats, fieldLength, fieldStats));
+        return documentScore;
     }
 }

@@ -1,4 +1,4 @@
-package com.github.tuyenlv17.search.engine.query;
+package com.github.tuyenlv17.search.engine.search.query;
 
 import com.github.tuyenlv17.search.engine.search.scorer.Scorer;
 import com.github.tuyenlv17.search.engine.search.similarity.Similarity;

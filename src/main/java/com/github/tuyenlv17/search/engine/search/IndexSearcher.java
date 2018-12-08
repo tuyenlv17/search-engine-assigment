@@ -1,7 +1,7 @@
 package com.github.tuyenlv17.search.engine.search;
 
 import com.github.tuyenlv17.search.engine.document.DocumentScore;
-import com.github.tuyenlv17.search.engine.query.Query;
+import com.github.tuyenlv17.search.engine.search.query.Query;
 import com.github.tuyenlv17.search.engine.search.result.ResultSet;
 import com.github.tuyenlv17.search.engine.search.scorer.Scorer;
 import com.github.tuyenlv17.search.engine.search.similarity.Similarity;

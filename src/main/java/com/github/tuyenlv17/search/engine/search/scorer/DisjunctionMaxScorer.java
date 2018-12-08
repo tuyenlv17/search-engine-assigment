@@ -1,11 +1,12 @@
 package com.github.tuyenlv17.search.engine.search.scorer;
 
 import com.github.tuyenlv17.search.engine.document.DocumentScore;
-import com.github.tuyenlv17.search.engine.query.Query;
+import com.github.tuyenlv17.search.engine.search.query.Query;
 import com.github.tuyenlv17.search.engine.search.similarity.Similarity;
 import com.github.tuyenlv17.search.engine.storage.Storage;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,6 +25,11 @@ public class DisjunctionMaxScorer extends Scorer {
 
     @Override
     public Set<DocumentScore> scoreDocSet() {
+        return null;
+    }
+
+    @Override
+    public Map<DocumentScore, DocumentScore> scoreDocMap() {
         return null;
     }
 }
