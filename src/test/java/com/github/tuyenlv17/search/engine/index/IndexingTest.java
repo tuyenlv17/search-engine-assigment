@@ -83,8 +83,8 @@ public class IndexingTest {
         loadData();
         Product product = new Product("giấy nhắc nhở");
         Document document = productMapper.toDocument(product);
-        BooleanQuery titleQuery = QueryParserUtils.toBooleanQuery(document.getFields().get(0));
-        BooleanQuery titleArQuery = QueryParserUtils.toBooleanQuery(document.getFields().get(1));
+        BooleanQuery titleQuery = QueryParserUtils.toBooleanQuery(document.getFieldMap().get("title"));
+        BooleanQuery titleArQuery = QueryParserUtils.toBooleanQuery(document.getFieldMap().get("title"));
         DisMaxQuery disMaxQuery = new DisMaxQuery()
                 .add(titleQuery.setBoost(1.2f))
                 .add(titleArQuery);
@@ -92,6 +92,21 @@ public class IndexingTest {
         List<DocumentScore> matchedDocument = indexSearcher.search(disMaxQuery, 0, 10).getDocumentScores();
         matchedDocument
                 .forEach(documentScore -> LOGGER.debug("matched getDoc {}", documentScore.getDocAsMap().get("title")));
+    }
+
+
+    @Test
+    public void testBM25Search() {
+        loadData();
+        productRepository.searchBM25("giấy nhắc nhở")
+                .forEach(product -> LOGGER.debug("{}: {}", product.getName(), product.getScore()));
+    }
+
+    @Test
+    public void testKeywordSearch() {
+        loadData();
+        productRepository.searchByKeyword("giấy nhắc nhở")
+                .forEach(product -> LOGGER.debug("{}: {}", product.getName(), product.getScore()));
     }
 
     protected void loadData() {

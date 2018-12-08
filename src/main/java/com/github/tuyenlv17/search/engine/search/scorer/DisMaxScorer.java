@@ -46,7 +46,6 @@ public class DisMaxScorer extends Scorer {
             Set<DocumentScore> subDocScore = subScorer.scoreDocSet();
             subDocScore.forEach(newDocumentScore -> {
                 if (documentScoreMap.containsKey(newDocumentScore)) {
-                    LOGGER.debug("dismax subquery {}", query);
                     DocumentScore oldDocScore = documentScoreMap.get(newDocumentScore);
                     //replace old score with higher new score
                     if (oldDocScore.getScore() < newDocumentScore.getScore()) {

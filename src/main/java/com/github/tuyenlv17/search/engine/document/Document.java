@@ -20,6 +20,7 @@ public class Document {
     List<Field> fields;
     Map<String, String> docAsMap = new HashMap<>();
     Map<String, Integer> fieldLength;
+    Map<String, Field> fieldMap = new HashMap<>();
 
     public Document addField(Field field) {
         if (fields == null) {
@@ -27,6 +28,7 @@ public class Document {
         }
         fields.add(field.setIndex(index));
         docAsMap.put(field.getName(), field.getValue().toString());
+        fieldMap.put(field.getName(), field);
         return this;
     }
 }
