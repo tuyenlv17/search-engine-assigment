@@ -1,31 +1,24 @@
-package com.github.tuyenlv17.search.application.repository;
+package com.github.tuyenlv17.search.application.mapper;
 
 import com.github.tuyenlv17.search.application.config.search.IndexConfig;
 import com.github.tuyenlv17.search.application.model.Product;
 import com.github.tuyenlv17.search.engine.document.Document;
 import com.github.tuyenlv17.search.engine.document.Field;
-import com.github.tuyenlv17.search.engine.index.writer.RamIndexWriter;
 import com.github.tuyenlv17.search.engine.utils.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 /**
- * Created by tuyenlv17 on 2018-12-05.
+ * Created by tuyenlv17 on 2018-12-08.
  */
-@Repository
-public class ProductRepository {
+@Service
+public class ProductMapper {
     @Autowired IndexConfig indexConfig;
-    @Autowired RamIndexWriter ramIndexWriter;
-
-    public void add(Product product) {
+    public Document toDocument(Product product) {
         Document document = new Document()
                 .setIndex(indexConfig.getProductIndex());
         document.addField(new Field(indexConfig.getProductIndex(), "title", product.getName()));
         document.addField(new Field(indexConfig.getProductIndex(), "title_ar", TextUtils.removeAccent(product.getName())));
-        ramIndexWriter.index(document);
-    }
-
-    public void delete(Product product) {
-
+        return document;
     }
 }

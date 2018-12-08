@@ -10,21 +10,26 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static com.github.tuyenlv17.search.engine.constants.UpdateStatusContants.INSERT;
 
 /**
  * Created by tuyenlv17 on 2018-12-04.
- * Using ram for storing inverted index and stats info, one application only run one instant of {@link RamStorage}
+ * Using ram for storing inverted index and stats info, one application only run one instant of {@link Storage}
  */
 @Service
-public class RamStorage extends AbstractStorage {
-    public static final Logger LOGGER = LogManager.getLogger(RamStorage.class);
+public class RamStorage extends Storage {
+    public static final Logger LOGGER = LogManager.getLogger(Storage.class);
     long incrId;
     Map<Term, Set<String>> invertedIndex;
     Map<Term, Map<String, Integer>> termFreqMap;
     Map<Term, TermStats> termStatsMap;
     Map<String, FieldStats> fieldStatsMap;
+    Map<String, Map<String, Integer>> fieldLengthMap;
     Map<String, Document> documentMap;
 
     @PostConstruct
@@ -35,6 +40,7 @@ public class RamStorage extends AbstractStorage {
         termStatsMap = new HashMap<>();
         fieldStatsMap = new HashMap<>();
         documentMap = new HashMap<>();
+        fieldLengthMap = new HashMap<>();
     }
 
     @Override
@@ -44,7 +50,7 @@ public class RamStorage extends AbstractStorage {
     }
 
     @Override
-    public long docCount() {
+    public long getDocCount() {
         return documentMap.size();
     }
 
@@ -77,12 +83,12 @@ public class RamStorage extends AbstractStorage {
     }
 
     @Override
-    public Document doc(String docId) {
+    public Document getDoc(String docId) {
         return documentMap.get(docId);
     }
 
     @Override
-    public int docFreq(Term term) {
+    public int getDocFreq(Term term) {
         TermStats termStat = termStatsMap.get(term);
         if (termStat == null) {
             return 0;
@@ -91,7 +97,7 @@ public class RamStorage extends AbstractStorage {
     }
 
     @Override
-    public TermStats termStats(Term term) {
+    public TermStats getTermStats(Term term) {
         TermStats termStat = termStatsMap.get(term);
         return termStat;
     }
@@ -137,6 +143,38 @@ public class RamStorage extends AbstractStorage {
     }
 
     @Override
+    public FieldStats getFieldStats(String fieldName) {
+        FieldStats fieldStats = fieldStatsMap.get(fieldName);
+        if (fieldStats == null) {
+            return new FieldStats(documentMap.size(), documentMap.size(), 0);
+        }
+        return fieldStats;
+    }
+
+    @Override
+    public int getFieldLength(String fieldName, String docID) {
+        Map<String, Integer> fieldLengths = fieldLengthMap.get(fieldName);
+        if (fieldLengths == null) {
+            return 0;
+        }
+        return fieldLengths.getOrDefault(docID, 0);
+    }
+
+    @Override
+    public void updateFieldLength(String fieldName, String docID, int fieldLength, int status) {
+        Map<String, Integer> fieldLengths = fieldLengthMap.get(fieldName);
+        if (fieldLengths == null) {
+            fieldLengths = new HashMap<>();
+            fieldLengthMap.put(fieldName, fieldLengths);
+        }
+        if (status == INSERT) {
+            fieldLengths.put(docID, fieldLength);
+        } else {
+            fieldLengths.remove(docID);
+        }
+    }
+
+    @Override
     public void updateFieldStats(Field field, int status) {
         FieldStats fieldStats = fieldStatsMap.get(field.getName());
         if (fieldStats == null) {
@@ -144,12 +182,13 @@ public class RamStorage extends AbstractStorage {
             fieldStatsMap.put(field.getName(), fieldStats);
         }
         fieldStats.setDocCount(fieldStats.getDocCount() + 1 * status);
+        fieldStats.setMaxDocCount(documentMap.size());
         fieldStats.setTotalTermFreq(fieldStats.getTotalTermFreq() + field.getAnalyzedTokens().size() * status);
     }
 
     @Override
-    public List<String> getDocIdsByTerm(Term term) {
-        return invertedIndex.get(term).stream().collect(Collectors.toList());
+    public Set<String> getDocIdsByTerm(Term term) {
+        return invertedIndex.get(term);
     }
 
     public void debugStats() {
