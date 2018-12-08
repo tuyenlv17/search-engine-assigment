@@ -141,6 +141,7 @@ public class RamStorage extends AbstractStorage {
         FieldStats fieldStats = fieldStatsMap.get(field.getName());
         if (fieldStats == null) {
             fieldStats = new FieldStats(0, 0);
+            fieldStatsMap.put(field.getName(), fieldStats);
         }
         fieldStats.setDocCount(fieldStats.getDocCount() + 1 * status);
         fieldStats.setTotalTermFreq(fieldStats.getTotalTermFreq() + field.getAnalyzedTokens().size() * status);

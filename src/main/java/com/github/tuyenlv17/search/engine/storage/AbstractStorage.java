@@ -44,6 +44,12 @@ public abstract class AbstractStorage {
      */
     public abstract void updateTermFreq(Term docTerm, String docId, int termFreq);
     public abstract float avgFieldLen(String fieldName);
+
+    /**
+     * Update field stats
+     * @param field
+     * @param status
+     */
     public abstract void updateFieldStats(Field field, int status);
     public abstract List<String> getDocIdsByTerm(Term term);
 

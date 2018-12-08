@@ -21,7 +21,7 @@ public class Field {
     List<Term> analyzedTokens;
     Analyzer analyzer;
 
-    public Field(String name, Object value) {
+    public Field(String index, String name, Object value) {
         this.name = name;
         this.value = value;
         analyzer = new DefaultAnalyzer();

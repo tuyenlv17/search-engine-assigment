@@ -25,8 +25,8 @@ public class ProductRepository {
     public void add(Product product) {
         Document document = new Document()
                 .setIndex(indexConfig.getProductIndex());
-        document.addField(new Field("title", product.getName()));
-        document.addField(new Field("title_ar", TextUtils.removeAccent(product.getName())));
+        document.addField(new Field(indexConfig.getProductIndex(), "title", product.getName()));
+        document.addField(new Field(indexConfig.getProductIndex(), "title_ar", TextUtils.removeAccent(product.getName())));
         ramIndexWriter.index(document);
     }
 
