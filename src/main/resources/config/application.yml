@@ -1,12 +1,12 @@
-spring:
-  main:
-    web-application-type: none
+#spring:
+#  main:
+#    web-application-type: none
+server:
+  port: 58080
 tiki:
   search:
     index:
       productIndex: product_dev
-    service:
-      port: 58080
     relevant:
       similarity:
         bm25:

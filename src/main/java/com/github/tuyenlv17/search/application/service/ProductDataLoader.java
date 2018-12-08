@@ -1,10 +1,13 @@
 package com.github.tuyenlv17.search.application.service;
 
 import com.github.tuyenlv17.search.application.model.Product;
+import com.github.tuyenlv17.search.application.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.Scanner;
 @Service
 public class ProductDataLoader {
     public static final Logger LOGGER = LogManager.getLogger(ProductDataLoader.class);
+    @Autowired ProductRepository productRepository;
     public List<Product> loadProducts() {
         List<Product> products = new ArrayList<>();
         try {
@@ -36,5 +40,10 @@ public class ProductDataLoader {
             LOGGER.error("error loading products", e);
         }
         return products;
+    }
+
+    @PostConstruct
+    public void startLoading() {
+        loadProducts().forEach(product -> productRepository.add(product));
     }
 }
