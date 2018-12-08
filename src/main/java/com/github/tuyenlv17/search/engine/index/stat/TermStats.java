@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 /**
  * Created by tuyenlv17 on 2018-12-05.
- * Stats info form term: doc freq, per term boosting
+ * Stats info form term: getDoc freq, per term boosting
  */
 @Data
 @Accessors(chain = true)

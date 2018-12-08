@@ -9,10 +9,17 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class FieldStats {
+    int maxDocCount;
     int docCount;
     int totalTermFreq;
 
     public FieldStats(int docCount, int totalTermFreq) {
+        this.docCount = docCount;
+        this.totalTermFreq = totalTermFreq;
+    }
+
+    public FieldStats(int maxDocCount, int docCount, int totalTermFreq) {
+        this.maxDocCount = maxDocCount;
         this.docCount = docCount;
         this.totalTermFreq = totalTermFreq;
     }

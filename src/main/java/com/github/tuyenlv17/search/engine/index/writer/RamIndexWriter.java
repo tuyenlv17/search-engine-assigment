@@ -1,7 +1,7 @@
 package com.github.tuyenlv17.search.engine.index.writer;
 
 import com.github.tuyenlv17.search.engine.document.Document;
-import com.github.tuyenlv17.search.engine.storage.RamStorage;
+import com.github.tuyenlv17.search.engine.storage.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RamIndexWriter extends IndexWriter {
-    @Autowired RamStorage ramStorage;
+    @Autowired
+    Storage ramStorage;
 
     @Override
     public void index(Document document) {

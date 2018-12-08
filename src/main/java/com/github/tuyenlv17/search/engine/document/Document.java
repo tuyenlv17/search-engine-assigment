@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,10 @@ import java.util.Map;
 @Accessors(chain = true)
 public class Document {
     String docId;
+    Long sedId;
     String index;
     List<Field> fields;
+    Map<String, String> docAsMap = new HashMap<>();
     Map<String, Integer> fieldLength;
 
     public Document addField(Field field) {
@@ -23,6 +26,7 @@ public class Document {
             fields = new ArrayList<>();
         }
         fields.add(field.setIndex(index));
+        docAsMap.put(field.getName(), field.getValue().toString());
         return this;
     }
 }

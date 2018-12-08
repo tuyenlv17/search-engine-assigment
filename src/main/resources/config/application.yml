@@ -7,3 +7,9 @@ tiki:
       productIndex: product_dev
     service:
       port: 58080
+    relevant:
+      similarity:
+        bm25:
+          k1: 1.2
+          b: 0.75
+          test: str
