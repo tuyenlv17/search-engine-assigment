@@ -11,13 +11,11 @@ import java.util.Objects;
 public class Term {
     String index;
     String fieldName;
-    Object value;
+    String value;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Term term = (Term) o;
         return Objects.equals(index, term.index) &&
                 Objects.equals(fieldName, term.fieldName) &&
@@ -27,10 +25,10 @@ public class Term {
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), index, fieldName, value);
+        return Objects.hash(index, fieldName, value);
     }
 
-    public Term(String index, String fieldName, Object value) {
+    public Term(String index, String fieldName, String value) {
 
         this.index = index;
         this.fieldName = fieldName;
