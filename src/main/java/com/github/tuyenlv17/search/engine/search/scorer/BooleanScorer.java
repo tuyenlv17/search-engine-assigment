@@ -22,6 +22,10 @@ public class BooleanScorer extends Scorer {
     public List<DocumentScore> scoreDoc() {
         return new ArrayList<>(scoreDocMap().keySet())
                 .stream()
+                .map(documentScore -> {
+                    documentScore.setScore(documentScore.getScore() * booleanQuery.getBoost());
+                    return documentScore;
+                })
                 .sorted((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()))
                 .collect(Collectors.toList());
     }

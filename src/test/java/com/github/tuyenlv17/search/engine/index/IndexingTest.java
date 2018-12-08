@@ -11,6 +11,7 @@ import com.github.tuyenlv17.search.engine.document.DocumentScore;
 import com.github.tuyenlv17.search.engine.document.Term;
 import com.github.tuyenlv17.search.engine.search.IndexSearcher;
 import com.github.tuyenlv17.search.engine.search.query.BooleanQuery;
+import com.github.tuyenlv17.search.engine.search.query.DisMaxQuery;
 import com.github.tuyenlv17.search.engine.search.query.Query;
 import com.github.tuyenlv17.search.engine.search.query.TermQuery;
 import com.github.tuyenlv17.search.engine.search.query.parser.QueryParserUtils;
@@ -73,6 +74,22 @@ public class IndexingTest {
         BooleanQuery booleanQuery = QueryParserUtils.toBooleanQuery(document.getFields().get(0));
         IndexSearcher indexSearcher = new IndexSearcher(ramStorage, new BM25Similarity(bm25Config));
         List<DocumentScore> matchedDocument = indexSearcher.search(booleanQuery, 0, 10).getDocumentScores();
+        matchedDocument
+                .forEach(documentScore -> LOGGER.debug("matched getDoc {}", documentScore.getDocAsMap().get("title")));
+    }
+
+    @Test
+    public void testDisMaxQuery() {
+        loadData();
+        Product product = new Product("giấy nhắc nhở");
+        Document document = productMapper.toDocument(product);
+        BooleanQuery titleQuery = QueryParserUtils.toBooleanQuery(document.getFields().get(0));
+        BooleanQuery titleArQuery = QueryParserUtils.toBooleanQuery(document.getFields().get(1));
+        DisMaxQuery disMaxQuery = new DisMaxQuery()
+                .add(titleQuery.setBoost(1.2f))
+                .add(titleArQuery);
+        IndexSearcher indexSearcher = new IndexSearcher(ramStorage, new BM25Similarity(bm25Config));
+        List<DocumentScore> matchedDocument = indexSearcher.search(disMaxQuery, 0, 10).getDocumentScores();
         matchedDocument
                 .forEach(documentScore -> LOGGER.debug("matched getDoc {}", documentScore.getDocAsMap().get("title")));
     }

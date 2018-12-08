@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
  * Computing term score using {@link Similarity}
  */
 public class TermScorer extends Scorer {
+    TermQuery query;
     Term term;
     public TermScorer(TermQuery query, Storage storage, Similarity similarity) {
         super(query, storage, similarity);
         this.term = query.getTerm();
+        this.query = query;
     }
 
     @Override

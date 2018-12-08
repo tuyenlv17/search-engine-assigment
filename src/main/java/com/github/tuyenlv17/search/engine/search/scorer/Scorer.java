@@ -25,8 +25,22 @@ public abstract class Scorer {
         this.similarity = similarity;
     }
 
+    /**
+     * Get scored matched document ranking by score
+     * @return sorted {@link DocumentScore}
+     */
     public abstract List<DocumentScore> scoreDoc();
+
+    /**
+     * Get scored matched document set
+     * @return set contain {@link DocumentScore}
+     */
     public abstract Set<DocumentScore> scoreDocSet();
+
+    /**
+     * * Get scored matched document map
+     * @return Map contains key {@link DocumentScore}
+     */
     public abstract Map<DocumentScore, DocumentScore> scoreDocMap();
 }
 
