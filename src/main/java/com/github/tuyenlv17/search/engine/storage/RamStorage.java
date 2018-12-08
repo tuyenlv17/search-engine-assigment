@@ -5,6 +5,8 @@ import com.github.tuyenlv17.search.engine.document.Field;
 import com.github.tuyenlv17.search.engine.document.Term;
 import com.github.tuyenlv17.search.engine.index.stat.FieldStats;
 import com.github.tuyenlv17.search.engine.index.stat.TermStats;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class RamStorage extends AbstractStorage {
+    public static final Logger LOGGER = LogManager.getLogger(RamStorage.class);
     long incrId;
     Map<Term, Set<String>> invertedIndex;
     Map<Term, Map<String, Integer>> termFreqMap;
@@ -101,7 +104,7 @@ public class RamStorage extends AbstractStorage {
                     .setDocFreq(0);
             termStatsMap.put(term, termStat);
         }
-        termStat.setDocFreq(termStat.getDocFreq() + 1);
+        termStat.setDocFreq(termStat.getDocFreq() + 1 * status);
     }
 
     @Override
@@ -139,12 +142,16 @@ public class RamStorage extends AbstractStorage {
         if (fieldStats == null) {
             fieldStats = new FieldStats(0, 0);
         }
-        fieldStats.setDocCount(fieldStats.getDocCount() + 1);
-        fieldStats.setTotalTermFreq(fieldStats.getTotalTermFreq() + field.getAnalyzedTokens().size());
+        fieldStats.setDocCount(fieldStats.getDocCount() + 1 * status);
+        fieldStats.setTotalTermFreq(fieldStats.getTotalTermFreq() + field.getAnalyzedTokens().size() * status);
     }
 
     @Override
     public List<String> getDocIdsByTerm(Term term) {
         return invertedIndex.get(term).stream().collect(Collectors.toList());
+    }
+
+    public void debugStats() {
+        LOGGER.debug("storage stats {}", incrId);
     }
 }

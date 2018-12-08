@@ -53,6 +53,14 @@ public abstract class AbstractStorage {
      */
     public void indexDocument(Document document) {
         String docId = getNewDocId();
+        indexDocument(document, docId);
+    }
+
+    /**
+     * Index document with analyzed fields in underline storage
+     * @param document
+     */
+    public void indexDocument(Document document, String docId) {
         document.setDocId(docId);
         Document existedDoc = doc(docId);
         if (existedDoc != null) {
