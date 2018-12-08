@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Product {
     String name;
+    float score;
 
     public Product(String name) {
         this.name = name;
