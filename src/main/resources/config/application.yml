@@ -1,3 +1,9 @@
 spring:
   main:
     web-application-type: none
+tiki:
+  search:
+    index:
+      productIndex: product_dev
+    service:
+      port: 58080
