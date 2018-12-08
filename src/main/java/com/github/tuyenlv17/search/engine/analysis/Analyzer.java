@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 /**
  * Created by tuyenlv17 on 2018-12-05.
  */
-public class AbstractAnalyzer {
+public class Analyzer {
     Tokenizer tokenizer;
     List<TokenFilter> tokenFilters;
 
-    public AbstractAnalyzer() {
+    public Analyzer() {
     }
 
-    public AbstractAnalyzer(Tokenizer tokenizer, List<TokenFilter> tokenFilters) {
+    public Analyzer(Tokenizer tokenizer, List<TokenFilter> tokenFilters) {
         this.tokenizer = tokenizer;
         this.tokenFilters = tokenFilters;
     }
