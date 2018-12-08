@@ -9,6 +9,7 @@ tiki:
       productIndex: product_dev
     relevant:
       similarity:
+        #recommended setting for bm25
         bm25:
           k1: 1.2
           b: 0.75
