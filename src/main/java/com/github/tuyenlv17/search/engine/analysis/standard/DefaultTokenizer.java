@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class DefaultTokenizer implements Tokenizer {
     //TODO check unicode delimiter
-    private static final String DELIMITER = "[\\s\\.,\"'?()-]";
+    private static final String DELIMITER = "[\\s\\.,\"'?()-]+";
 
     @Override
     public List<String> tokenize(String text) {
-        return Arrays.asList(text.split(DELIMITER));
+        return Arrays.asList(text.trim().split(DELIMITER));
     }
 }
