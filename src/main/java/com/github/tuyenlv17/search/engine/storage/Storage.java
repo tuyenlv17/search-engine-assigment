@@ -68,7 +68,7 @@ public abstract class Storage {
                 .stream()
                 .map(s -> new DocumentScore(s, 0))
                 .map(s -> {
-                    LOGGER.debug("doc {}", getDoc(s.getDocId()).getDocAsMap());
+//                    LOGGER.debug("doc {}", getDoc(s.getDocId()).getDocAsMap());
                     s.setDocAsMap(getDoc(s.getDocId()).getDocAsMap());
                     return s;
                 })
@@ -80,7 +80,7 @@ public abstract class Storage {
                 .stream()
                 .map(s -> new DocumentScore(s, 0))
                 .map(s -> {
-                    LOGGER.debug("doc {}", getDoc(s.getDocId()).getDocAsMap());
+//                    LOGGER.debug("doc {}", getDoc(s.getDocId()).getDocAsMap());
                     s.setDocAsMap(getDoc(s.getDocId()).getDocAsMap());
                     return s;
                 })
