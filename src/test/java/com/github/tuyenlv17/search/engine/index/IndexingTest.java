@@ -1,7 +1,7 @@
 package com.github.tuyenlv17.search.engine.index;
 
-import com.github.tuyenlv17.search.application.model.Product;
 import com.github.tuyenlv17.search.application.repository.ProductRepository;
+import com.github.tuyenlv17.search.application.service.ProductDataLoader;
 import com.github.tuyenlv17.search.engine.storage.RamStorage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +17,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class IndexingTest {
     @Autowired ProductRepository productRepository;
     @Autowired RamStorage ramStorage;
-
+    @Autowired ProductDataLoader productDataLoader;
 
     @Test
     public void indexProduct() {
-        Product product = new Product("Sinh ra để chạy");
-        productRepository.add(product);
+        productDataLoader
+                .loadProducts()
+                .forEach(product -> productRepository.add(product));
         ramStorage.debugStats();
     }
 }
